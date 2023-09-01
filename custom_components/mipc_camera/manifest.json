@@ -1,0 +1,16 @@
+{
+    "domain": "mipc_camera",
+    "name": "MIPC Camera",
+    "codeowners": [
+      "@0xybo"
+    ],
+    "config_flow": true,
+    "dependencies": [],
+    "documentation": "https://github.com/0xybo/MIPC_Camera",
+    "homekit": {},
+    "iot_class": "cloud_polling",
+    "requirements": ["js2py"],
+    "ssdp": [],
+    "zeroconf": []
+  }
+  

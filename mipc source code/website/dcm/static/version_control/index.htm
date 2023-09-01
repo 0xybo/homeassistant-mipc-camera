@@ -1,0 +1,200 @@
+<!-- version v10.5.1.2305261723 -->
+<!-- 版本号 v10.5.1.2305261723 -->
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html" charset="utf-8" />
+		<script src="./host_choose.js"></script>
+		<script type="text/javascript">
+			if (location.href.indexOf("f=app") > -1) {
+				document.write("<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'/>");
+			}
+			var m_hostname;
+			var m_httpsport;
+			var m_httpsappid;
+			var m_https;
+			var m_htm;
+			var browserHref;
+			var web_url = window.location.href;
+			var ispicture = 0;
+			var host_choose_item; // 域名判断选择项
+			var iframeData; // 从iframe中获取的传递值 传递的内容示例: {signalServer: "http://45.113.201.4:7080", host: "www.vimtag.com"}
+			var postFatherMessageInfo = {}; // 向上级传递的信息内容
+			var iframeSrcHeader; // iframe访问的链接地址域名及协议
+			function GetUrlParms() {
+				// 参数截取函数
+				var args, query, pairs;
+				args = new Object();
+				query = location.search.substring(1);
+				pairs = query.split("&");
+				for (var i = 0; i < pairs.length; i++) {
+					var pos = pairs[i].indexOf("=");
+					if (pos === -1) {
+						continue;
+					}
+					var argname = pairs[i].substring(0, pos);
+					var value = pairs[i].substring(pos + 1);
+					args[argname] = unescape(value);
+				}
+				return args;
+			}
+
+			function start() {
+				// 主进程执行函数
+				var s,
+					pageTitle,
+					tp = null,
+					request,
+					oem_domain;
+				window.addEventListener(
+					"message",
+					function (e) {
+						// 获取入口文件处取得的信令服务器地址
+						iframeData = e.data;
+						console.log(iframeData, "childPage get parentPage data"); // 在子页面中获取到父页面发送的数据信息
+						m_hostname = iframeData.host; // 赋值m_hostname
+						browserHref = iframeData.browserHref; // 赋值获取到的浏览器显示的地址
+						cmipcgwGetData = iframeData.cmipcgwGetData; // 赋值获取到的cmipcgw信息
+						// 地址链接中是否包含device
+						if (browserHref.indexOf("device") > 0) {
+							m_hostname += "/device";
+						}
+						// 客户端vimtag/ebitcam特殊判断
+						if ((m_hostname === "www.vimtag.com" || m_hostname === "www.ebitcam.com") && window.fujikam === "fujikam") {
+							m_hostname += "/device";
+						}
+						console.log(m_hostname, "m_hostname");
+						// 从Json文件中对比已经注册了的域名并获取展示在标签页上的title名
+						for (host_item in host_choose) {
+							if (host_item === m_hostname || (host_item.substring(0, 3) !== "www" && host_item === m_hostname)) {
+								pageTitle = host_choose[host_item].title; // 存储选中的标题值
+								host_choose_item = host_item; // 存储选中的item
+							}
+						}
+						if (pageTitle) {
+							// 赋值title名, 列表中含有的正常设置 未含有的统一设置成MIPC 使用postFatherMessage方法进行跨域传输
+							postFatherMessageInfo.pageTitle = pageTitle;
+						} else {
+							postFatherMessageInfo.pageTitle = "MIPC";
+						}
+						console.log("host_choose_item", host_choose_item, pageTitle);
+						// iframe地址协议判断
+						// 如果用户访问的是http协议
+						if (browserHref.indexOf("http://") !== -1) {
+							if (iframeData.signalServer[2]) {
+								// 返回的信令服务器地址数组中是否包含https协议的信令服务器地址
+								console.log("enter change https");
+								postFatherMessageInfo.sendEvalFunc = 'window.location.href = "' + browserHref.replace("http", "https") + '"';
+								postFatherMessage(postFatherMessageInfo);
+								return;
+							} else {
+								// 返回的数组中不包含https的信令服务器地址
+								iframeSrcHeader = iframeData.signalServer[0];
+							}
+						} else {
+							// https协议
+							iframeSrcHeader = iframeData.signalServer[2];
+						}
+						if (host_choose_item && host_choose[host_choose_item].address) {
+							// 访问服务器固定地址文件
+							// if ((iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'cn' && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'cnyd'
+							// && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'th' && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'bd'
+							// && iframeData.cmipcgwGetData.myloc.toLowerCase() !== 'ae')  && host_choose_item === 'www.vimtag.com') { // 除中国/泰国/孟加拉/阿拉伯联合酋长国地区跳转
+							//   postFatherMessageInfo.sendEvalFunc = 'window.location.href = "https://us.vimtag.com/";'
+							// } else {
+							document.body.innerHTML =
+								"<iframe id='main_ifr' src='" + iframeSrcHeader + host_choose[host_choose_item].address + "index.htm?m=" + m_hostname + "'></iframe>";
+							// }
+							console.log("run iframe create");
+							postFatherMessage(postFatherMessageInfo);
+						} else {
+							// 访问版本文件内容
+							get_version();
+						}
+					},
+					false
+				);
+			}
+
+			function get_version() {
+				// 获取版本信息
+				// 拼接版本中关键参数 host_choose_item, host_choose[host_choose_item].brand !== undefined, host_choose[host_choose_item].brand, browserHref.split('.')[1]
+				var version_request =
+					"/dcm/version/rls_website/" +
+					(host_choose_item && host_choose[host_choose_item].brand !== undefined
+						? host_choose[host_choose_item].brand
+						: window.location.href.split(".")[1]) +
+					"-pkgs.rls.json";
+				var httpRequest = new XMLHttpRequest(); // 第一步：建立所需的对象
+				httpRequest.open("GET", iframeSrcHeader + version_request, true); // 第二步：打开连接  将请求参数写在url中
+				httpRequest.send(); //第三步：发送请求  将请求参数写在URL中
+				// 接口请求完成后的返回值处理
+				httpRequest.onreadystatechange = function () {
+					if (httpRequest.readyState === 4 && httpRequest.status === 200) {
+						var json = httpRequest.responseText; // 获取到json字符串，还需解析
+						json = JSON.parse(json);
+						var version_number;
+						var version_pub = json.pkgsRls.website.pub;
+						console.log("get version rls data", version_pub, host_choose[host_choose_item], host_choose, host_choose_item); // 获取版本信息接口请求完成后的返回值
+						for (var index = 0; index < version_pub.length; index++) {
+							if (host_choose[host_choose_item].versionType === "test" && version_pub[index].status === "test") {
+								// 测试版版本号
+								version_number = version_pub[index].ver;
+							} else if (host_choose[host_choose_item].versionType === "debug" && version_pub[index].status === "debug") {
+								// debug版版本号
+								version_number = version_pub[index].ver;
+							} else if (host_choose[host_choose_item].versionType === "main" && version_pub[index].status === "main") {
+								// 正式版版本号
+								version_number = version_pub[index].ver;
+							}
+						}
+						console.log(version_number, "final choice the version number"); // 最终选择的版本号信息
+						document.body.innerHTML =
+							"<iframe id='main_ifr' src='" +
+							iframeSrcHeader +
+							"/dcm/version/repo/website/pkg-website-" +
+							version_number +
+							"/index.html?m=" +
+							host_choose[host_choose_item].brand +
+							"'></iframe>";
+					}
+				};
+			}
+
+			function postFatherMessage(data) {
+				// 调用向父页面发送信息方法,其中数据为title
+				console.log("postMessage to parentPage", data); // 向父页面发送的标题数据
+				window.parent.postMessage(data, "*");
+			}
+
+			function splitHttpIframe() {
+				// 使用https信令服务器的域名+http信令服务器的端口拼接
+				var httpSignalServer = iframeData.signalServer[0]; // http信令
+				var httpsSignalServer = iframeData.signalServer[2]; // https信令
+				return (
+					"http://" +
+					httpsSignalServer.substring(8, httpsSignalServer.lastIndexOf(":")) +
+					httpSignalServer.substring(httpSignalServer.lastIndexOf(":"))
+				);
+			}
+		</script>
+
+		<style type="text/css">
+			html,
+			body,
+			#iframe_div,
+			iframe {
+				background: #fff;
+				height: 100%;
+				width: 100%;
+				margin: 0;
+				padding: 0;
+				/*overflow:hidden; */
+				position: relative;
+				border: 0;
+			}
+		</style>
+		<title></title>
+	</head>
+
+	<body onload="start()"></body>
+</html>

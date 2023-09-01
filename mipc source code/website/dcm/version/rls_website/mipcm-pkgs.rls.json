@@ -1,0 +1,655 @@
+{
+	"pkgsRls": {
+		"App": {
+			"name": "App",
+			"time": "20190716114502308",
+			"pub": [
+				{
+					"ver": "v6.7.1_20190716114502308",
+					"time": "20190716114502308",
+					"status": "main",
+					"file": "pkg-App-v6.7.1_20190716114502308"
+				},
+				{
+					"ver": "v6.7.1_20190716114502308",
+					"time": "20190716114502308",
+					"status": "test",
+					"file": "pkg-App-v6.7.1_20190716114502308"
+				},
+				{
+					"ver": "v6.7.1_20190716114502308",
+					"time": "20190716114502308",
+					"status": "debug",
+					"file": "pkg-App-v6.7.1_20190716114502308"
+				}
+			]
+		},
+		"PkgMgrJs": {
+			"name": "PkgMgrJs",
+			"time": "20190904152339430",
+			"pub": [
+				{
+					"ver": "v6.9.2_20200330093228",
+					"time": "20200401085310582",
+					"status": "main",
+					"file": "pkg-PkgMgrJs-v6.9.2_20200330093228"
+				},
+				{
+					"ver": "v6.7.1_20190716114502308",
+					"time": "20190716114502308",
+					"status": "test",
+					"file": "pkg-PkgMgrJs-v6.7.1_20190716114502308"
+				},
+				{
+					"ver": "v6.7.1_20190716114502308",
+					"time": "20190716114502308",
+					"status": "debug",
+					"file": "pkg-PkgMgrJs-v6.7.1_20190716114502308"
+				}
+			]
+		},
+		"addDevice": {
+			"name": "addDevice",
+			"time": "20191125103409695",
+			"pub": [
+				{
+					"ver": "v6.9.2_20201109110631",
+					"time": "20201123103640842",
+					"status": "main",
+					"file": "pkg-addDevice-v6.9.2_20201109110631"
+				},
+				{
+					"ver": "v6.9.2_20201109110631",
+					"time": "20201109111303658",
+					"status": "test",
+					"file": "pkg-addDevice-v6.9.2_20201109110631"
+				},
+				{
+					"ver": "v6.0.1_20191211095205",
+					"time": "20191211095514145",
+					"status": "debug",
+					"file": "pkg-addDevice-v6.0.1_20191211095205"
+				}
+			]
+		},
+		"cloudStorage": {
+			"name": "cloudStorage",
+			"time": "20191021151022882",
+			"pub": [
+				{
+					"ver": "v7.9.1_20200903180100000",
+					"time": "20201213124948035",
+					"status": "main",
+					"file": "pkg-cloudStorage-v7.9.1_20200903180100000"
+				},
+				{
+					"ver": "v7.12.1_20201210170100000",
+					"time": "20201214154709247",
+					"status": "test",
+					"file": "pkg-cloudStorage-v7.12.1_20201210170100000"
+				},
+				{
+					"ver": "v7.9.1_20200903180100000",
+					"time": "20201211100529294",
+					"status": "debug",
+					"file": "pkg-cloudStorage-v7.9.1_20200903180100000"
+				}
+			]
+		},
+		"ipcSet": {
+			"name": "ipcSet",
+			"time": "20191021092357885",
+			"pub": [
+				{
+					"ver": "v6.9.1_20200924172734",
+					"time": "20201009093212835",
+					"status": "main",
+					"file": "pkg-ipcSet-v6.9.1_20200924172734"
+				},
+				{
+					"ver": "v6.9.1_20201216165813",
+					"time": "20201216173721229",
+					"status": "test",
+					"file": "pkg-ipcSet-v6.9.1_20201216165813"
+				},
+				{
+					"ver": "v6.0.1_20191211095257",
+					"time": "20191211095708548",
+					"status": "debug",
+					"file": "pkg-ipcSet-v6.0.1_20191211095257"
+				}
+			]
+		},
+		"cloudStorageAd": {
+			"name": "cloudStorageAd",
+			"time": "20190929174927696",
+			"pub": [
+				{
+					"ver": "v7.12.1_202012111019000000",
+					"time": "20201217163113008",
+					"status": "main",
+					"file": "pkg-cloudStorageAd-v7.12.1_202012111019000000"
+				},
+				{
+					"ver": "v7.12.1_202012111019000000",
+					"time": "20201215095738315",
+					"status": "test",
+					"file": "pkg-cloudStorageAd-v7.12.1_202012111019000000"
+				},
+				{
+					"ver": "v7.11.1_20201123112430906000",
+					"time": "20201211145533410",
+					"status": "debug",
+					"file": "pkg-cloudStorageAd-v7.11.1_20201123112430906000"
+				}
+			]
+		},
+		"invoice": {
+			"name": "invoice",
+			"time": "20200427113216798",
+			"pub": [
+				{
+					"ver": "v7.12.1_20201210141400000",
+					"time": "20201217161216311",
+					"status": "main",
+					"file": "pkg-invoice-v7.12.1_20201210141400000"
+				},
+				{
+					"ver": "v7.12.1_20201210141400000",
+					"time": "20201211093358473",
+					"status": "test",
+					"file": "pkg-invoice-v7.12.1_20201210141400000"
+				},
+				{
+					"ver": "v7.4.1_20200427110558944001",
+					"time": "20200427113235285",
+					"status": "debug",
+					"file": "pkg-invoice-v7.4.1_20200427110558944001"
+				}
+			]
+		},
+		"order": {
+			"name": "order",
+			"time": "20200521095127317",
+			"pub": [
+				{
+					"ver": "v7.11.2_20201120150150705000",
+					"time": "20201127105731857",
+					"status": "main",
+					"file": "pkg-order-v7.11.2_20201120150150705000"
+				},
+				{
+					"ver": "v7.11.2_20201120150150705000",
+					"time": "20201125110754812",
+					"status": "test",
+					"file": "pkg-order-v7.11.2_20201120150150705000"
+				},
+				{
+					"ver": "v7.11.2_20201120150150705000",
+					"time": "20201211100632046",
+					"status": "debug",
+					"file": "pkg-order-v7.11.2_20201120150150705000"
+				}
+			]
+		},
+		"myCloudStorage": {
+			"name": "myCloudStorage",
+			"time": "20200721171329388",
+			"pub": [
+				{
+					"ver": "v7.10.1_20201021182146701000",
+					"time": "20201027095051337",
+					"status": "main",
+					"file": "pkg-myCloudStorage-v7.10.1_20201021182146701000"
+				},
+				{
+					"ver": "v7.10.1_20201021182146701000",
+					"time": "20201021182359354",
+					"status": "test",
+					"file": "pkg-myCloudStorage-v7.10.1_20201021182146701000"
+				},
+				{
+					"ver": "v7.7.4_20200724171632187000",
+					"time": "20200724172001614",
+					"status": "debug",
+					"file": "pkg-myCloudStorage-v7.7.4_20200724171632187000"
+				}
+			]
+		},
+		"website": {
+			"name": "website",
+			"time": "20201222173848035",
+			"pub": [
+				{
+					"ver": "v9.10.1.2210121414",
+					"time": "20221020182935787",
+					"status": "main",
+					"file": "pkg-website-v9.10.1.2210121414"
+				},
+				{
+					"ver": "v9.10.1.2210121414",
+					"time": "20221013182436544",
+					"status": "test",
+					"file": "pkg-website-v9.10.1.2210121414"
+				},
+				{
+					"ver": "v9.6.1.2206061427",
+					"time": "20221020182931060",
+					"status": "debug",
+					"file": "pkg-website-v9.6.1.2206061427"
+				}
+			]
+		}
+	},
+	"pkgsSpec": {
+		"App-v6.7.1_20190716114502308": {
+			"name": "App",
+			"ver": "v6.7.1_20190716114502308",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": []
+			},
+			"debug": {}
+		},
+		"PkgMgrJs-v6.7.1_20190716114502308": {
+			"name": "PkgMgrJs",
+			"ver": "v6.7.1_20190716114502308",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.0"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"addDevice-v6.0.1_20191211095205": {
+			"name": "addDevice",
+			"ver": "v6.0.1_20191211095205",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": ["1.0"],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"ipcSet-v6.0.1_20191211095257": {
+			"name": "ipcSet",
+			"ver": "v6.0.1_20191211095257",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": []
+			},
+			"debug": {}
+		},
+		"PkgMgrJs-v6.9.2_20200330093228": {
+			"name": "PkgMgrJs",
+			"ver": "v6.9.2_20200330093228",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": []
+			},
+			"debug": {}
+		},
+		"invoice-v7.4.1_20200427110558944001": {
+			"name": "invoice",
+			"ver": "v7.4.1_20200427110558944001",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"myCloudStorage-v7.7.4_20200724171632187000": {
+			"name": "myCloudStorage",
+			"ver": "v7.7.4_20200724171632187000",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"cloudStorage-v7.9.1_20200903180100000": {
+			"name": "cloudStorage",
+			"ver": "v7.9.1_20200903180100000",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"ipcSet-v6.9.1_20200924172734": {
+			"name": "ipcSet",
+			"ver": "v6.9.1_20200924172734",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": []
+			},
+			"debug": {}
+		},
+		"myCloudStorage-v7.10.1_20201021182146701000": {
+			"name": "myCloudStorage",
+			"ver": "v7.10.1_20201021182146701000",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"addDevice-v6.9.2_20201109110631": {
+			"name": "addDevice",
+			"ver": "v6.9.2_20201109110631",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": ["1.0"],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"cloudStorageAd-v7.11.1_20201123112430906000": {
+			"name": "cloudStorageAd",
+			"ver": "v7.11.1_20201123112430906000",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": ["supportAdList"],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"order-v7.11.2_20201120150150705000": {
+			"name": "order",
+			"ver": "v7.11.2_20201120150150705000",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": ["SupportCldToOrder", "SupportCldToOrderModify"],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"invoice-v7.12.1_20201210141400000": {
+			"name": "invoice",
+			"ver": "v7.12.1_20201210141400000",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"cloudStorage-v7.12.1_20201210170100000": {
+			"name": "cloudStorage",
+			"ver": "v7.12.1_20201210170100000",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": ["cldSupportToPack"],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"cloudStorageAd-v7.12.1_202012111019000000": {
+			"name": "cloudStorageAd",
+			"ver": "v7.12.1_202012111019000000",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": ["supportAdList"],
+				"extAbility": [],
+				"compatability": [],
+				"dep": [
+					{
+						"App": "1.2"
+					}
+				]
+			},
+			"debug": {}
+		},
+		"ipcSet-v6.9.1_20201216165813": {
+			"name": "ipcSet",
+			"ver": "v6.9.1_20201216165813",
+			"ospf": {
+				"android": 1,
+				"ios": 1
+			},
+			"desc": "index package",
+			"entry": "index.html",
+			"if": {
+				"ver": "1.0",
+				"baseAbility": [],
+				"extAbility": [],
+				"compatability": [],
+				"dep": []
+			},
+			"debug": {}
+		}
+	},
+	"ver": "v6.7.1_20190716114502308",
+	"time": "20220412151013823",
+	"pkgSvrDir": {
+		"ver": "v6.7.1_20190716114502308",
+		"rls": "/dcm/version/rls_website1",
+		"repo": "/dcm/version/repo",
+		"pubuser": "/dcm/version/pubuser",
+		"pubdev": "/dcm/version"
+	},
+	"pkgsList": {
+		"ver": "v6.7.1_20190716114502308",
+		"pkgs": {
+			"App": {
+				"downloadPolicy": "opt",
+				"installPolicy": "silient",
+				"main": true
+			},
+			"PkgMgrJs": {
+				"downloadPolicy": "must",
+				"installPolicy": "silient"
+			},
+			"addDevice": {
+				"downloadPolicy": "must",
+				"installPolicy": "silient"
+			},
+			"cloudStorage": {
+				"downloadPolicy": "must",
+				"installPolicy": "silient"
+			},
+			"ipcSet": {
+				"downloadPolicy": "must",
+				"installPolicy": "silient"
+			},
+			"cloudStorageAd": {
+				"downloadPolicy": "must",
+				"installPolicy": "silient"
+			},
+			"invoice": {
+				"downloadPolicy": "must",
+				"installPolicy": "silient"
+			},
+			"order": {
+				"downloadPolicy": "must",
+				"installPolicy": "silient"
+			},
+			"myCloudStorage": {
+				"downloadPolicy": "must",
+				"installPolicy": "silient"
+			},
+			"website": {
+				"downloadPolicy": "must",
+				"installPolicy": "silient"
+			}
+		}
+	}
+}
