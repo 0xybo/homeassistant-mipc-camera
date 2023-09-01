@@ -7,7 +7,7 @@ from asyncio import timeout, TimeoutError as AsyncioTimeoutError, sleep, create_
 
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.components.camera import Camera, CameraEntityFeature
 from homeassistant.helpers.aiohttp_client import async_aiohttp_proxy_web,async_get_clientsession
