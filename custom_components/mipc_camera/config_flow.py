@@ -6,8 +6,8 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 
-from .camera import MIPCCamera
 from .const import DOMAIN, LOGGER
+from .account import MIPCAccount
 from .utils import CannotConnect, InvalidAuth, SessionError
 
 
@@ -33,11 +33,23 @@ class MIPCFlowHandler(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
         if user_input is not None:
             try:
-                camera = MIPCCamera(
-                    username=user_input["username"], password=user_input["password"]
+                account = MIPCAccount(
+                    username=user_input["username"],
+                    password=user_input["password"],
                 )
-                if not await camera.auth(hass=self.hass):
+
+                if not await account.auth(hass=self.hass):
                     raise CannotConnect
+
+                else:
+                    return self.async_create_entry(
+                        title=f"MIPC Account : {user_input['username']}",
+                        data={},
+                        options={
+                            "username": user_input["username"],
+                            "password": user_input["password"],
+                        },
+                    )
 
             except CannotConnect:
                 errors["base"] = "cannot_connect"
@@ -48,15 +60,6 @@ class MIPCFlowHandler(ConfigFlow, domain=DOMAIN):
             except Exception:  # pylint: disable=broad-except
                 LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
-            else:
-                return self.async_create_entry(
-                    title=f"MIPC Account : {user_input['username']}",
-                    data={},
-                    options={
-                        "username": user_input["username"],
-                        "password": user_input["password"]
-                    },
-                )
         else:
             user_input = {}
 

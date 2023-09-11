@@ -1,0 +1,20 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "L'appareil est déjà configuré"
+        },
+        "error": {
+            "cannot_connect": "Echec de connection",
+            "invalid_auth": "Informations de connection invalide",
+            "unknown": "Erreur inattendue"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "password": "Mot de passe",
+                    "username": "Nom d'utilisateur"
+                }
+            }
+        }
+    }
+}

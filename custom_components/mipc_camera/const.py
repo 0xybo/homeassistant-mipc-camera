@@ -8,6 +8,7 @@ from homeassistant.const import Platform
 
 DOMAIN: Final[str] = "mipc_camera"
 PLATFORMS: Final[list[Platform]] = [Platform.CAMERA]
+DATA_CAMERA_PREFS: Final[str] = "camera_prefs"
 
 BASE_HOST: Final[str] = "https://www.mipcm.com:7443"
 PRIME: Final[str] = "791658605174853458830696113306796803"
