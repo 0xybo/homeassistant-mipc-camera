@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  validate-hacs:
+  validate-home-assistant:
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v3"
