@@ -79,7 +79,6 @@ class MIPCCamera(Camera):
             LOGGER.info(msg)
 
     async def async_create_stream(self) -> Stream | None:
-        LOGGER.info("➡️ mipc_camera.MIPCCamera.async_create_stream")
 
         if self.stream:
             await self.stream.stop()
@@ -90,7 +89,6 @@ class MIPCCamera(Camera):
         return self.stream
 
     async def stream_source(self) -> str | None:
-        LOGGER.info("➡️ mipc_camera.MIPCCamera.stream_source")
         if not self.__name:
             return None
 
@@ -105,7 +103,6 @@ class MIPCCamera(Camera):
     async def async_camera_image(
         self, width: int | None = None, height: int | None = None
     ) -> bytes | None:
-        LOGGER.info("➡️ mipc_camera.MIPCCamera.async_camera_image")
         if not self.__name:
             return None
 

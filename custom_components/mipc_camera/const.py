@@ -6,16 +6,17 @@ from typing import Final, Literal
 
 from homeassistant.const import Platform
 
-DOMAIN: Final[str] = "mipc_camera"
-PLATFORMS: Final[list[Platform]] = [Platform.CAMERA]
-DATA_CAMERA_PREFS: Final[str] = "camera_prefs"
+DOMAIN: Final = "mipc_camera"
+PLATFORMS: Final = [Platform.CAMERA]
+DATA_CAMERA_PREFS: Final = "camera_prefs"
 
-BASE_HOST: Final[str] = "https://www.mipcm.com:7443"
-PRIME: Final[str] = "791658605174853458830696113306796803"
-ROOT_NUM: Final[str] = "5"
-CAM_TIMEOUT: Final[int] = 30000
+BASE_HOST: Final = "https://www.mipcm.com:7443"
+PRIME: Final = "791658605174853458830696113306796803"
+ROOT_NUM: Final = "5"
+CAM_TIMEOUT: Final = 30000
+MAX_REQUEST_TRY: Final = 10
 
-PATHS: Final[dict[str, str]] = {
+PATHS: Final = {
     "HOSTS": "/cmipcgw/cmipcgw_get_req.js",
     "CREATE_SESSION": "/mmq_create.js",
     "KEY": "/cacs_dh_req.js",
@@ -31,7 +32,7 @@ PATHS: Final[dict[str, str]] = {
     "UNKNOW2": "/ccm_subscribe.js",
 }
 
-TIMEOUT: Final[int] = 10
+TIMEOUT: Final = 10
 
 LOGGER = logging.getLogger(__package__)
 DEBUG: bool = False
