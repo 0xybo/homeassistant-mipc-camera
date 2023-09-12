@@ -8,7 +8,15 @@ from homeassistant.exceptions import HomeAssistantError
 
 from .const import DOMAIN, LOGGER
 from .account import MIPCAccount
-from .utils import CannotConnect, InvalidAuth, SessionError
+
+class CannotConnect(HomeAssistantError):
+    """Error to indicate we cannot connect."""
+
+class InvalidAuth(HomeAssistantError):
+    """Error to indicate there is invalid auth."""
+
+class SessionError(HomeAssistantError):
+    """Error to indicate there is invalid auth."""
 
 
 @callback
