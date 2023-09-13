@@ -12,6 +12,6 @@
   "requirements": ["js2py==0.74", "pycryptodome==3.18.0"],
   "ssdp": [],
   "zeroconf": [],
-  "version": "0.0.2",
+  "version": "0.0.3",
   "loggers": ["custom_components.mipc_camera"]
 }
