@@ -8,7 +8,7 @@
   "integration_type": "hub",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/0xybo/MIPC_Camera/issues",
+  "loggers": ["custom_components.mipc_camera"],
   "requirements": ["js2py==0.74", "pycryptodome==3.18.0"],
-  "version": "0.0.3",
-  "loggers": ["custom_components.mipc_camera"]
+  "version": "0.0.3"
 }
