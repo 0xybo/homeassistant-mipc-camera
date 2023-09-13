@@ -1,6 +1,8 @@
-from __future__ import annotations
+"""
+Implement the MIPCCamera class that represents a camera available on an MIPC account.
+"""
 
-from typing import Any
+from __future__ import annotations
 
 from homeassistant.components.stream import Stream
 
@@ -14,13 +16,24 @@ from .account import MIPCAccount
 from .const import (
     LOGGER,
     DOMAIN,
-    DEBUG,
 )
 
 
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
+    """
+    Called when a new configuration entry for this integration is added to Home Assistant.
+    
+    It initializes a MIPCAccount object using the provided username and password from the 
+    configuration entry options.
+
+    It retrieves a list of devices associated with the MIPC account using the 
+    account.get_devices method.
+
+    It creates instances of MIPCCamera for each device and adds them to Home Assistant 
+    using async_add_entities.
+    """
     account = MIPCAccount(
         username=entry.options["username"], password=entry.options["password"]
     )
@@ -62,8 +75,8 @@ class MIPCCamera(Camera):
         """Initialize a MIPC Camera"""
         super().__init__()
 
-        self.__account = account
-        self.__name = name
+        self._account = account
+        self._name = name
 
         if unique_id is not None:
             self._attr_unique_id = unique_id
@@ -74,12 +87,11 @@ class MIPCCamera(Camera):
         self._attr_should_poll = True
         self._attr_is_on = is_on
 
-    def log(self, msg: Any) -> None:
-        if DEBUG:
-            LOGGER.info(msg)
-
     async def async_create_stream(self) -> Stream | None:
-
+        """
+        Create a Stream for stream_source.
+        Full name: homeassistant.components.camera.Camera.async_create_stream
+        """
         if self.stream:
             await self.stream.stop()
         self.stream = None
@@ -89,36 +101,61 @@ class MIPCCamera(Camera):
         return self.stream
 
     async def stream_source(self) -> str | None:
-        if not self.__name:
+        """
+        Return the source of the stream.
+
+        This is used by cameras with CameraEntityFeature.STREAM
+        and StreamType.HLS.
+        Full name: homeassistant.components.camera.Camera.stream_source
+        """
+        if not self._name:
             return None
 
-        source = await self.__account.get_stream_source(
-            hass=self.hass, device_name=self.__name
+        source = await self._account.get_stream_source(
+            hass=self.hass, device_name=self._name
         )
 
-        self.log("Returning stream source")
+        LOGGER.debug("Returning stream source")
 
         return source
 
     async def async_camera_image(
         self, width: int | None = None, height: int | None = None
     ) -> bytes | None:
-        if not self.__name:
+        """
+        Return bytes of camera image.
+        
+        Full name: homeassistant.components.camera.Camera.async_camera_image
+        """
+        if not self._name:
             return None
 
-        image = await self.__account.get_still_image(
-            hass=self.hass, device_name=self.__name
+        image = await self._account.get_still_image(
+            hass=self.hass, device_name=self._name
         )
 
-        self.log("Returning still image")
+        LOGGER.debug("Returning still image")
 
         return image
 
     async def async_update(self):
-        self.log("Updating informations")
+        """
+        Called each time camera information is updated. 
+        (self._attr_should_poll must be set to True.)
+        
+        Updates the camera's information, such as its online status. 
+        It retrieves the list of devices associated with the MIPC 
+        account and updates the is_on attribute based on the device's status.
+        """
+        LOGGER.debug("Updating informations")
 
-        devices = await self.__account.get_devices(hass=self.hass)
+        devices = await self._account.get_devices(hass=self.hass)
 
         for device in devices:
-            if device["sn"] == self.__name:
+            if device["sn"] == self._name:
                 self._attr_is_on = device["stat"] == "Online"
+
+        if self.stream:
+            self.stream.update_source(
+                await self._account.get_stream_source(self._name, self.hass)
+            )

@@ -1,15 +1,20 @@
+"""
+Implement the MIPCAccount that represents an account on MIPC 
+with some methods to fetch data from mipcm.com.
+"""
+
 from time import time
 from typing import Any
 from json import loads as json_loads
 from re import IGNORECASE, MULTILINE, sub
 
+from asyncio import timeout, TimeoutError as AsyncioTimeoutError
 from requests import get, Response, Timeout, HTTPError
-from asyncio import timeout, TimeoutError as AsyncioTimeoutError, sleep, create_task
 
 from homeassistant.core import HomeAssistant, HomeAssistantError
 
 from .deps.mdh import mdh
-from .deps.md5 import crypto
+from .deps.md5 import crypto as md5
 from .deps.mcodec import mcodec
 from .deps.crypto import encrypt
 from .const import (
@@ -19,17 +24,19 @@ from .const import (
     PATHS,
     PRIME,
     ROOT_NUM,
-    DEBUG,
     CAM_TIMEOUT,
     MAX_REQUEST_TRY,
 )
 
+mdh = mdh.mdh
+mcodec = mcodec.mcodec
 
 class RequestError(HomeAssistantError):
-    pass
+    """Error raised in case of failed request to MIPC."""
 
 
-def _make_get_request(url: str, verify: bool = False):
+def _make_get_request(url: str, verify: bool = False) -> Response:
+    """Make request synchronously with hass.async_add_executor_job."""
     response = get(url, timeout=TIMEOUT, verify=verify)
 
     response.raise_for_status()
@@ -39,11 +46,8 @@ def _make_get_request(url: str, verify: bool = False):
 
 
 class MIPCAccount:
+    """represents an account on MIPC with some methods to fetch data from mipcm.com."""
     def __init__(self, username: str, password: str) -> None:
-        self.mdh = mdh.mdh
-        self.md5 = crypto
-        self.mcodec = mcodec.mcodec
-
         self._username: str = username
         self._password: str = password
 
@@ -53,36 +57,33 @@ class MIPCAccount:
 
         self._qid: str | None = None
         self._seq: int = 0
-        self._private: str = self.mdh.gen_private()
-        self._public: str = self.mdh.gen_public(self._private)
-        self._sharedKey: str | None = None
+        self._private: str = mdh.gen_private()
+        self._public: str = mdh.gen_public(self._private)
+        self._shared_key: str | None = None
         self._key: str | None = None
         self._lid: str | None = None
         self._shared_key: str | None = None
         self._encrypted_password: str | None = None
         self._sid: str | None = None
         self._nid: str | None = None
-        self._host: str | None = None
 
-    async def host(self, hass: HomeAssistant) -> str | None:
-        if not self._host:
-            await self.get_mipc_host(hass=hass)
-        return self._host
-
-    def log(self, msg: Any) -> None:
-        if DEBUG:
-            LOGGER.info(msg)
 
     def parse_response(self, response: str) -> dict:
-        responseJSON = sub(
-            r"(?P<before_key>[\{\[,])(?P<space_before>\s?)(?P<key>[a-z0-9_\.]+)(?P<after_key>:)(?P<space_after>\s?)",
-            '\\g<before_key>"\\g<key>"\\g<after_key>',
+        """
+        Parse JS message from mipcm.com as JSON.
+        
+        Responses from mipcm.com are formatted as follows :
+        message({some_json:"but without quotation marks (as in javascript)"})
+        """
+        response_json = sub(
+            r"(?P<b>[\{\[,])(?P<sb>\s?)(?P<k>[a-z0-9_\.]+)(?P<a>:)(?P<sa>\s?)",
+            '\\g<b>"\\g<k>"\\g<a>',
             response[8:-2],
             0,
             IGNORECASE | MULTILINE,
         )
 
-        return json_loads(responseJSON)
+        return json_loads(response_json)
 
     def url(
         self,
@@ -90,6 +91,7 @@ class MIPCAccount:
         params: dict[str, str] | None = None,
         host: str | None = None,
     ) -> str:
+        """Generates a URL for making requests to the MIPC service."""
         if not host:
             host = self._host if self._host else BASE_HOST
         if not params:
@@ -97,11 +99,11 @@ class MIPCAccount:
 
         self._seq += 1
 
-        paramsList = [f"hfrom_handle={self._seq}"]
+        params_list = [f"hfrom_handle={self._seq}"]
         for param in params.keys():
-            paramsList.append(f"{param}={params[param]}")
+            params_list.append(f"{param}={params[param]}")
 
-        return f"{host}{PATHS[path_name]}?{'&'.join(paramsList)}"
+        return f"{host}{PATHS[path_name]}?{'&'.join(params_list)}"
 
     async def get(
         self,
@@ -111,46 +113,50 @@ class MIPCAccount:
         https: bool = False,
         host: str | None = None,
     ) -> dict | None:
+        """
+        Performs an HTTP GET request to the specified 
+        path and returns the parsed JSON response.
+        """
         if not params:
             params = {}
 
         url = self.url(path_name, params, host=host)
         error: str | None = None
-        responseJSON: dict[str, Any] | None = None
+        response_json: dict[str, Any] | None = None
 
         try:
             async with timeout(TIMEOUT):
                 response: Response = await hass.async_add_executor_job(
                     _make_get_request, url, https
                 )
-                responseData = response.text
+                response_data = response.text
 
-                responseJSON = self.parse_response(responseData)
+                response_json = self.parse_response(response_data)
                 if (
-                    "data" in responseJSON
-                    and "result" in responseJSON["data"]
-                    and type(responseJSON["data"]["result"]) == str
-                    and responseJSON["data"]["result"] != ""
+                    "data" in response_json
+                    and "result" in response_json["data"]
+                    and isinstance(response_json["data"]["result"], str)
+                    and response_json["data"]["result"] != ""
                 ):
-                    error = f"Error getting {url} : {responseJSON['data']['result']}"
+                    error = f"Error getting {url} : {response_json['data']['result']}"
                 elif (
-                    "data" in responseJSON
-                    and "ret" in responseJSON["data"]
-                    and "reason" in responseJSON["data"]["ret"]
-                    and type(responseJSON["data"]["ret"]["reason"]) == str
-                    and responseJSON["data"]["ret"]["reason"] != ""
+                    "data" in response_json
+                    and "ret" in response_json["data"]
+                    and "reason" in response_json["data"]["ret"]
+                    and isinstance(response_json["data"]["ret"]["reason"], str)
+                    and response_json["data"]["ret"]["reason"] != ""
                 ):
                     error = (
-                        f"Error getting {url} : {responseJSON['data']['ret']['reason']}"
+                        f"Error getting {url} : {response_json['data']['ret']['reason']}"
                     )
                 elif (
-                    "data" in responseJSON
-                    and "Result" in responseJSON["data"]
-                    and "Reason" in responseJSON["data"]["Result"]
-                    and type(responseJSON["data"]["Result"]["Reason"]) == str
-                    and responseJSON["data"]["Result"]["Reason"] != ""
+                    "data" in response_json
+                    and "Result" in response_json["data"]
+                    and "Reason" in response_json["data"]["Result"]
+                    and isinstance(response_json["data"]["Result"]["Reason"], str)
+                    and response_json["data"]["Result"]["Reason"] != ""
                 ):
-                    error = f"Error getting {url} : {responseJSON['data']['Result']['Reason']}"
+                    error = f"Error getting {url} : {response_json['data']['Result']['Reason']}"
         except AsyncioTimeoutError:
             error = f"Timeout getting '{url}'"
         except Timeout:
@@ -161,11 +167,15 @@ class MIPCAccount:
         if error:
             raise RequestError(error)
 
-        return responseJSON
+        return response_json
 
     async def retry_if_error(
-        self, fn: str, hass: HomeAssistant, params: dict | None = None
+        self, method: str, hass: HomeAssistant, params: dict | None = None
     ) -> Any | None:
+        """
+        Retries a specified method if an error occurs up to 
+        a maximum number of retries MAX_REQUEST_TRY.
+        """
         if not params:
             params = {}
 
@@ -174,17 +184,17 @@ class MIPCAccount:
         while try_count < MAX_REQUEST_TRY:
             try:
                 try_count += 1
-                return await getattr(self, fn)(hass=hass, in_retry_loop=True, **params)
+                return await getattr(self, method)(hass=hass, in_retry_loop=True, **params)
             except HomeAssistantError as err:
-                LOGGER.error(f"(try: {str(try_count)}) {err}")
+                LOGGER.error("(try: %s) %s", method, err)
                 await self.clear_values()
 
         return None
 
     async def get_mipc_host(self, hass: HomeAssistant) -> str | None:
-        """Return MIPC host"""
+        """Retrieves the MIPC host."""
 
-        self.log("Getting host")
+        LOGGER.debug("Getting host")
 
         response = await self.get(
             path_name="HOSTS", https=True, host=BASE_HOST, hass=hass
@@ -198,14 +208,15 @@ class MIPCAccount:
     async def get_qid(
         self, hass: HomeAssistant, in_retry_loop: bool = False
     ) -> str | None:
+        """Retrieves the QID (Query ID) used for authentication."""
         if not in_retry_loop:
-            return await self.retry_if_error(fn="get_qid", hass=hass)
+            return await self.retry_if_error(method="get_qid", hass=hass)
 
         await self.check_timeout()
         if not self._host:
             await self.get_mipc_host(hass=hass)
 
-        self.log("Getting QID")
+        LOGGER.debug("Getting QID")
 
         response = await self.get(path_name="CREATE_SESSION", hass=hass)
 
@@ -218,14 +229,15 @@ class MIPCAccount:
     async def generate_dh(
         self, hass: HomeAssistant, in_retry_loop: bool = False
     ) -> str | None:
+        """Generates Diffie-Hellman keys."""
         if not in_retry_loop:
-            return await self.retry_if_error(fn="generate_dh", hass=hass)
+            return await self.retry_if_error(method="generate_dh", hass=hass)
 
         await self.check_timeout()
         if not self._qid:
             await self.get_qid(hass=hass)
 
-        self.log("Generating DH")
+        LOGGER.debug("Generating DH")
 
         response = await self.get(
             path_name="KEY",
@@ -248,8 +260,9 @@ class MIPCAccount:
     async def auth(
         self, hass: HomeAssistant, in_retry_loop: bool = False
     ) -> str | None:
+        """Performs user authentication with the MIPC service."""
         if not in_retry_loop:
-            return await self.retry_if_error(fn="auth", hass=hass)
+            return await self.retry_if_error(method="auth", hass=hass)
 
         await self.check_timeout()
         if not self._shared_key:
@@ -259,7 +272,7 @@ class MIPCAccount:
 
         self._nid = await self.generate_nid(self._lid, 2, hass=hass)
 
-        self.log("Authentication")
+        LOGGER.debug("Authentication")
 
         response = await self.get(
             path_name="LOGIN",
@@ -284,14 +297,15 @@ class MIPCAccount:
     async def get_devices(
         self, hass: HomeAssistant, in_retry_loop: bool = False
     ) -> dict | None:
+        """Retrieves all cameras connected to the MIPC account."""
         if not in_retry_loop:
-            return await self.retry_if_error(fn="get_devices", hass=hass)
+            return await self.retry_if_error(method="get_devices", hass=hass)
 
         await self.check_timeout()
         if not self._nid:
             await self.auth(hass=hass)
 
-        self.log("Getting devices")
+        LOGGER.debug("Getting devices")
 
         response = await self.get(
             path_name="DEVICES",
@@ -313,9 +327,10 @@ class MIPCAccount:
     async def get_stream_source(
         self, device_name: str, hass: HomeAssistant, in_retry_loop: bool = False
     ) -> str | None:
+        """Retrieves the stream source for a specific device."""
         if not in_retry_loop:
             return await self.retry_if_error(
-                fn="get_stream_source", params={"device_name": device_name}, hass=hass
+                method="get_stream_source", params={"device_name": device_name}, hass=hass
             )
 
         if not device_name:
@@ -328,7 +343,7 @@ class MIPCAccount:
 
         nid = await self.generate_nid(self._sid, 0, hass=hass)
 
-        self.log("Getting stream source")
+        LOGGER.debug("Getting stream source")
 
         response = await self.get(
             path_name="PLAY",
@@ -352,9 +367,10 @@ class MIPCAccount:
     async def get_still_image(
         self, hass: HomeAssistant, device_name: str, in_retry_loop: bool = False
     ) -> bytes | None:
+        """Retrieves a still image for a specific device."""
         if not in_retry_loop:
             return await self.retry_if_error(
-                fn="get_still_image", hass=hass, params={"device_name": device_name}
+                method="get_still_image", hass=hass, params={"device_name": device_name}
             )
 
         if not self._sid:
@@ -362,7 +378,7 @@ class MIPCAccount:
 
         nid = await self.generate_nid(self._sid, 0, hass=hass)
 
-        self.log("Getting still image")
+        LOGGER.debug("Getting still image")
 
         url = self.url(
             "STILL_IMAGE",
@@ -381,9 +397,9 @@ class MIPCAccount:
                 response: Response = await hass.async_add_executor_job(
                     _make_get_request, url
                 )
-                responseData = response.content
+                response_data = response.content
 
-                return responseData
+                return response_data
         except AsyncioTimeoutError:
             LOGGER.error("Timeout getting '%s'", url)
         except Timeout:
@@ -392,40 +408,44 @@ class MIPCAccount:
             LOGGER.error("Error getting '%s' : %s", url, err)
 
     async def generate_shared_key(self, hass: HomeAssistant) -> str:
+        """Generates a shared secret key."""
         if not self._key:
             await self.generate_dh(hass=hass)
 
-        self.log("Generating shared key")
+        LOGGER.debug("Generating shared key")
 
-        self._shared_key = self.mdh["gen_shared_secret"](self._private, self._key)
+        self._shared_key = mdh["gen_shared_secret"](self._private, self._key)
 
         return self._shared_key
 
     async def crypt_password(self, hass: HomeAssistant) -> str:
+        """Encrypts the user's password."""
         if not self._shared_key:
             await self.generate_dh(hass=hass)
 
-        self.log("Encrypting password")
+        LOGGER.debug("Encrypting password")
 
         self._encrypted_password = encrypt(self._password, self._shared_key)
 
         return self._encrypted_password
 
     async def generate_nid(self, id_: str, num: int, hass: HomeAssistant) -> str:
+        """Generates a NID (Network ID)."""
         await self.check_timeout()
         if not self._shared_key:
             await self.generate_dh(hass=hass)
 
-        self.log("Generating NID")
+        LOGGER.debug("Generating NID")
 
-        return self.mcodec.nid(
-            self._seq, id_, self._shared_key, num, None, None, self.md5, "hex"
+        return mcodec.nid(
+            self._seq, id_, self._shared_key, num, None, None, md5, "hex"
         )
 
     async def clear_values(self) -> None:
-        self.log("Clearing values")
+        """Clears stored values for new authentication."""
+        LOGGER.debug("Clearing values")
         self._qid = None
-        self._sharedKey = None
+        self._shared_key = None
         self._key = None
         self._lid = None
         self._shared_key = None
@@ -433,10 +453,11 @@ class MIPCAccount:
         self._sid = None
         self._nid = None
 
-        self._private = self.mdh.gen_private()
-        self._public = self.mdh.gen_public(self._private)
+        self._private = mdh.gen_private()
+        self._public = mdh.gen_public(self._private)
 
     async def check_timeout(self) -> None:
+        """Checks if the authentication has timed out and clears session data if necessary."""
         if not self._last_authentication:
             self._last_authentication = time()
 
