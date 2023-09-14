@@ -19,5 +19,5 @@
     "js2py==0.74",
     "pycryptodome==3.18.0"
   ],
-  "version": "0.0.3"
+  "version": "1.0.0"
 }
