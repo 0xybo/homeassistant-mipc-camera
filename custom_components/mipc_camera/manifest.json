@@ -8,10 +8,10 @@
   "dependencies": [
     "camera"
   ],
-  "documentation": "https://github.com/0xybo/MIPC_Camera",
+  "documentation": "https://github.com/0xybo/homeassistant-mipc-camera",
   "integration_type": "hub",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/0xybo/MIPC_Camera/issues",
+  "issue_tracker": "https://github.com/0xybo/homeassistant-mipc-camera/issues",
   "loggers": [
     "custom_components.mipc_camera"
   ],
