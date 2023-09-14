@@ -1,14 +1,17 @@
 <div align="center">
-    <img src="brands/icon.png" height="100">
+    <img src="https://github.com/0xybo/homeassistant-mipc-camera/blob/main/brands/icon.png" height="100">
 </div>
 <div align="center">
     <h1>MIPC Camera</h1>
 </div>
-    
-<a href="https://github.com/hacs/integration">
-    <img src="https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge">
-</a>
-<!-- <a href="https://github.com/hacs/integration"><img src="https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=for-the-badge"></a> -->
+
+[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
+<!--
+[![Last Release](https://img.shields.io/github/v/release/0xybo/homeassistant-mipc-camera?style=for-the-badge)](https://github.com/0xybo/homeassistant-mipc-camera/releases)
+-->
+<!-- 
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
+-->
 
 Home Assistant custom component for viewing cameras connected to a MIPC account.
 
