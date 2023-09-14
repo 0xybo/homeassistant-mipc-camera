@@ -28,9 +28,9 @@ Description available on the website : _MIPC is a mobile real-time video surveil
 - [HACS](https://hacs.xyz/) installed
 
 **Shortcut :**
-1. Open [https://my.home-assistant.io/redirect/hacs_repository/?owner=0xybo&repository=MIPC_Camera&category=integration](https://my.home-assistant.io/redirect/hacs_repository/?owner=0xybo&repository=MIPC_Camera&category=integration) and follow the instructions until you see the repository README on Home Assistant.
+1. Open [https://my.home-assistant.io/redirect/hacs_repository/?owner=0xybo&repository=homeassistant-mipc-camera&category=integration](https://my.home-assistant.io/redirect/hacs_repository/?owner=0xybo&repository=homeassistant-mipc-camera&category=integration) and follow the instructions until you see the repository README on Home Assistant.
 
-    [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=0xybo&repository=MIPC_Camera&category=integration)
+    [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=0xybo&repository=homeassistant-mipc-camera&category=integration)
 
 2. Go to installation step 7.
 
@@ -43,7 +43,7 @@ Description available on the website : _MIPC is a mobile real-time video surveil
 **Installation :**
 1. Go to HACS `Integrations` section.
 2. In the top right-hand corner, open the menu and click on `Custom repositories`.
-3. Enter `https://github.com/0xybo/MIPC_Camera` in repositoy field.
+3. Enter `https://github.com/0xybo/homeassistant-mipc-camera` in repositoy field.
 4. Select `integration` as category.
 5. Then click on `Add`.
 6. In `Integrations` section click on `MIPC Camera` card.
@@ -62,7 +62,7 @@ Description available on the website : _MIPC is a mobile real-time video surveil
 # Configuration
 
 **Shortcut :**
-1. Open [https://my.home-assistant.io/redirect/config_flow_start/?domain=mipc_camera](https://my.home-assistant.io/redirect/config_flow_start/?domain=) and follow the instructions until the configuration pop-up window appears on Home Assistant.
+1. Open [https://my.home-assistant.io/redirect/config_flow_start/?domain=mipc_camera](https://my.home-assistant.io/redirect/config_flow_start/?domain=mipc_camera) and follow the instructions until the configuration pop-up window appears on Home Assistant.
 
     [![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=mipc_camera)
 2. Go to configuration step 5.
